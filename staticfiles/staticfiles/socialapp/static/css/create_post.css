@@ -1,0 +1,174 @@
+.container {
+    max-width: 75%;
+    margin: 9rem auto 2rem;
+}
+
+.board {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box {
+    display: flex;
+    width: 100%;
+    height: 400px;
+    gap: 73px;
+}
+
+.preview-container {
+    width: 48%;
+}
+
+.preview-container h3 {
+    font-size: 1.2rem;
+    color: black;
+    margin-bottom: 0.5rem;
+}
+
+.preview-box {
+    width: 100%;
+    height: 300px;
+    background-color: #f7f7f7;
+    border: 2px dashed #bbb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-box img,
+.preview-box video {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+h1 {
+    color: black;
+    font-weight: 600;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    color: #666;
+}
+
+.form-container {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.form-container h1 {
+    font-size: 1.8rem;
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 2rem;
+}
+
+.post-button[type="submit"],
+#cancel-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.crop-button{
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: none;
+}
+
+.post-button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.post-button[type="submit"]:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.crop-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.crop-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#cancel-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+#cancel-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Improved layout for mobile responsiveness */
+@media (max-width: 768px) {
+    .container {
+        max-width: 80%;
+        height: 80vh;
+        margin: 6rem auto 1rem;    
+    }
+    .board{
+        padding: 0;
+    }
+    .box {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    .form-container, .preview-container {
+        width: 100%;
+        gap: 0;
+    }
+    .preview-box {
+        height: 200px; /* Ensure this fits well on mobile */
+    }
+
+    .btn {
+        gap: 1rem;
+    }
+    .post-button[type="submit"],
+    #cancel-button,
+    .crop-button {
+        flex: 1; /* Allow buttons to take equal width */
+        min-width: 120px; /* Minimum width for buttons */
+    }
+}
+
+
+/* Directly target validation error messages */
+.errorlist, .errorlist li, .error-message, .error-message li {
+    color: red !important; /* Ensure color change with !important */
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.non-field-errors, .non-field-errors li, .errorlist.non-field-errors, .errorlist.non-field-errors li {
+    color: red !important;
+    font-weight: bold;
+    font-size: 0.9rem;
+}

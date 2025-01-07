@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <h2>Search Results for "{{ query }}"</h2>
+
+    <div class="search-results">
+        <div class="posts">
+            {% if posts %}
+                <h3>Posts:</h3>
+                <div class="post-list">
+                    {% for post in posts|dictsortreversed:"created_at" %}
+                        <li class="post-item">
+                            <div class="post-header">
+                                <strong>
+                                    <a href="{% url 'profile' username=post.user.username %}">{{ post.user.username }}</a>
+                                </strong>
+                                {% if user != post.user %}
+                                    {% if user.is_authenticated %}
+                                        {% if post.user.username in follow_statuses %}
+                                            <button onclick="toggleFollowUser('{{ post.user.username }}')" class="btn-f">Unfollow</button>
+                                        {% else %}
+                                            <button onclick="toggleFollowUser('{{ post.user.username }}')" class="btn-f">Follow</button>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+
+                            <div class="post-content">
+                                {% if post.image %}
+                                    <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
+                                {% endif %}
+                                {% if post.video %}
+                                    <video loading="lazy" class="post-video" controls>
+                                        <source src="{{ post.video.url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                {% endif %}
+                            </div>
+
+                            <div class="post-details">
+                                <div class="like-comment-section">
+                                    <button class="like-btn" onclick="toggleLikePost('{{ post.pk }}')">
+                                        {% if is_liked %}
+                                            ❤️
+                                        {% else %}
+                                            🩷
+                                        {% endif %}
+                                        <span id="like-count-{{ post.pk }}">{{ post.total_likes }}</span>
+                                    </button>
+
+                                    <button class="comment-toggle-btn" onclick="toggleComments('{{ post.pk }}')"><i class="fa-regular fa-comment"></i></button>
+
+                                    <div class="post-footer">
+                                        <strong>{{ post.user.username }}</strong>
+                                        <span>{{ post.created_at }}</span>
+                                    </div>
+                                </div>
+
+                                <div id="comments-{{ post.pk }}" class="model" style="display: none;">
+                                    <div class="modal-content">
+                                        <span class="close" onclick="toggleComments('{{ post.pk }}')">&times;</span>
+                                        <div class="comments-header">
+                                            <h3>Comments</h3>
+                                        </div>
+                                        <div class="comments-box" >
+                                            <ul class="comments-list">
+                                                {% for comment in post.comments.all %}
+                                                    <li class="comment-item">
+                                                        <strong>{{ comment.user.username }}:</strong> {{ comment.text }}
+                                                        <p class="comment-date">{{ comment.created_at }}</p>
+                                                    </li>
+                                                {% empty %}
+                                                    <li>No comments yet.</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <form method="post" onsubmit="addComment(event, '{{ post.pk }}')" class="comment-form">
+                                            {% csrf_token %}
+                                            <input type="text" name="text" id="comment-message" placeholder="Add a comment..." required>
+                                            <button type="submit" class="add-comment-btn">Add</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <div class="post-caption">
+                                    <p><b>{{ post.caption }}</b></p>
+                                </div>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li>No posts available.</li>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No posts available.</p>
+            {% endif %}
+        </div>
+
+        <div class="profiles">
+            {% if profiles %}
+                <h3>Profiles:</h3>
+                <ul class="profile-list">
+                {% for profile in profiles %}
+                <li class="profile-item">
+                    <div class="profile-info">
+                        <div class='profile'>
+                            <div>
+                                {% if profile.profile.profile_pic %}
+                                    <img src="{{ profile.profile.profile_pic.url}}" alt="Profile picture" class="profile-icon">
+                                {% else %}
+                                    <img src="{% static 'images/default.png' %}" alt="Default profile picture" class="profile-icon">
+                                {% endif %}
+                            </div>
+                            <strong>
+                                <a href="{% url 'profile' username=profile.username %}">{{ profile.username }}</a>
+                            </strong>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>No profiles found.</p>
+            {% endif %}
+        </div>
+    </div>
+<link rel="stylesheet" href="{% static 'css/search_results.css' %}">
+{% endblock %}

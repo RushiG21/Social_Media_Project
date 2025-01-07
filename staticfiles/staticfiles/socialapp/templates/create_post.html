@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Create Post</h1>
+<div class="board">
+    <form class="box" method="post" enctype="multipart/form-data">
+        <div class="preview-container">
+            <h3>Preview:</h3>
+            <div >
+                <div class="preview-box" id="preview-box"></div> <!-- Preview box with crop functionality -->
+            </div>
+        </div>
+        <div class="form-container">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" id="cropped-image" name="cropped_image" >
+            <div class="btn">
+                <button type="button" class="crop-button" id="crop-button">Crop & Post</button>
+                <button type="submit" class="post-button">Post</button>
+                <button type="button" id="cancel-button">Cancel</button>
+            </div>
+        </div>  
+        
+    </form>
+</div>
+<!-- Linking CSS and JS files -->
+<link rel="stylesheet" href="{% static 'css/create_post.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script src="{% static 'js/create_post.js' %}"></script>
+{% endblock %}

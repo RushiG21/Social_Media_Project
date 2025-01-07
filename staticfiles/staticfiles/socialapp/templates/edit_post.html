@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Edit Post</h1>
+    <form class="box" method="post" enctype="multipart/form-data">
+        <div class="preview-container">
+            <h3>Preview</h3>
+            <div class="preview-box" id="preview-box">
+                {% csrf_token %}
+                {% if current_image_url %}
+                    <img id="preview-image" src="{{ current_image_url }}" alt="Image Preview" >
+                {% elif  current_video_url %}
+                    <video id="preview-video" controls >
+                            <source src="{{ current_video_url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+                </div>
+            </div>
+        </div>       
+        <div class="form-container">
+            <input type="hidden" id="cropped-image" name="cropped_image" value="">
+            {% if current_image_url %}
+                {{ form.image.label_tag }}
+                {{ form.image  }} 
+                    <div class="error-message" style="color: red;">
+                        {{ form.image.errors.as_text }}
+                    </div>
+            {% elif  current_video_url %}
+                {{form.video.label_tag  }}{{form.video}}
+                    <div class="error-message" style="color: red;">
+                        {{ form.video.errors.as_text }}
+                    </div>
+            {% endif %}
+                
+            <div class="caption">
+                {{ form.caption.label_tag  }}
+                {{ form.caption }}
+                {% if form.caption.errors %}
+                    <div class="error-message" style="color: red;">
+                        {{ form.caption.errors.as_text }}
+                    </div>
+                {% endif %}
+                
+            </div>
+            
+            <div class="btn">
+                <button type="button" class="crop-button" id="crop-button">Crop & Save</button>
+                <button type="submit" class="save-button" id="save-button"><i class="fas fa-save"></i> Save</button>
+                <button type="button" id="cancel-button" data-url="{% url 'profile' username=username %}"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+        </div>
+    </form>
+<link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script src="{% static 'js/edit_post.js' %}"></script>
+{% endblock %}
