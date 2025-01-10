@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v!7i87v$_a#ungtx_t64s=w$a@hpeb@#%p3l^(2#8$cyn9j04r'
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY='django-insecure-v!7i87v$_a#ungtx_t64s=w$a@hpeb@#%p3l^(2#8$cyn9j04r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+# DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG=True
+# ALLOWED_HOSTS =os.environ.get('ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS=[]
 
 # Application definition
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'socialapp',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -76,26 +79,18 @@ WSGI_APPLICATION = 'socialmedia.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 # sqlite database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-# AWS PostgreSql database(Live)
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'socialmedia',
-       'USER': 'RushiG21',
-       'PASSWORD': '*#46Rushikesh',
-       'HOST': 'socialmedia.craowqqag00b.ap-south-1.rds.amazonaws.com',
-       'PORT': '5432',
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
+
+# Render PostgreSql database(Live)
+# database_url=os.environ.get('DATABASE_URL')
+DATABASES["default"] = dj_database_url.parse("postgresql://socialmedia_database_ywir_user:3rsmdL6E5PZ9yTXA9SiNghyyckwzgjAZ@dpg-cu0edo1u0jms73d03km0-a.ohio-postgres.render.com/socialmedia_database_ywir")
+# postgresql://socialmedia_database_ywir_user:3rsmdL6E5PZ9yTXA9SiNghyyckwzgjAZ@dpg-cu0edo1u0jms73d03km0-a.ohio-postgres.render.com/socialmedia_database_ywir
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -170,3 +165,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
